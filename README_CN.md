@@ -1,22 +1,15 @@
-<div align="center">
-<h1 align="center">vite-plugin-runtime-cdn</h1>
-
-English / [简体中文](./README_CN.md)
-
-A Vite plugin that supports runtime CDN configuration.
-
-一个支持运行时 CDN 配置的 Vite 插件。
+# vite-plugin-runtime-cdn
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![bundle][bundle-src]][bundle-href]
 [![License][license-src]][license-href]
 
-</div>
+一个支持运行时 CDN 配置的 Vite 插件。
 
-## Install
+## 安装
 
-> Make sure your vite version is **2.9.0** or higher.
+> 请确认你的 Vite 版本在 **2.9.0** 以上。
 
 ```sh
 # pnpm
@@ -27,35 +20,35 @@ yarn add -D vite-plugin-runtime-cdn
 npm i -D vite-plugin-runtime-cdn
 ```
 
-## Usage
+## 使用
 
 ```ts
 // vite.config.js
 import { defineConfig } from 'vite'
 
-// 1. import the plugin
+// 1. 导入插件
 import { RuntimeCdnPlugin } from 'vite-plugin-runtime-cdn'
 
 export default defineConfig({
   plugins: [
-    // 2. add it to the plugins list
+    // 2. 添加至插件列表
     RuntimeCdnPlugin(),
   ],
 })
 ```
 
-The plugin's runtime CDN domain is obtained through `window.cdn_domain`, with the default configuration set to `${window.cdn_domain || ''}`. Therefore, you need to ensure that `window.cdn_domain` has been injected into the HTML or other entry files beforehand. If you want to modify this configuration, you can pass in the `cdnDomainPlaceholder` parameter. However, you need to use `${}` to wrap it, such as `${window.myCustomCDNDomain || ''}`.
+该插件运行时的 cdn 域名是通过 `window.cdn_domain` 取到的，默认配置为 `${window.cdn_domain || ''}`，所以你需要保证 `window.cdn_domain` 已经在 html 或者其它入口文件已经注入，如果你想修改该配置，你可以传入 `cdnDomainPlaceholder` 参数，但你需要使用 `${}` 进行包裹，如 `${window.myCustomCDNDomain || ''}`。
 
 ```ts
 // vite.config.js
 import { defineConfig } from 'vite'
 
-// 1. import the plugin
+// 1. 导入插件
 import { RuntimeCdnPlugin } from 'vite-plugin-runtime-cdn'
 
 export default defineConfig({
   plugins: [
-    // 2. add it to the plugins list
+    // 2. 添加至插件列表
     RuntimeCdnPlugin({
       cdnDomainPlaceholder: `${window.myCustomCDNDomain || ''}`,
     }),
@@ -63,20 +56,20 @@ export default defineConfig({
 })
 ```
 
-By default, this plugin does not transform static resource references (like images) within CSS files. If you want to also convert static resources inside CSS to runtime CDN configurations, you need to inject the CSS into their respective JS modules, then transforming them into runtime CDN configurations. This approach of injecting CSS into JS modules is based on the [`vite-plugin-inject-css-to-js`](https://github.com/Levix/vite-plugin-inject-css-to-js) plugin.
+该插件默认不会转换 css 文件内部的静态资源（如图片等）引用，如果你想同时将 css 内部的静态资源也转化为运行时 cdn 配置，则需要将 css 注入到各自的 js 模块内部，再变成运行时 cdn 配置，这里将 css 注入至 js 模块参考的是 [`vite-plugin-inject-css-to-js`](https://github.com/Levix/vite-plugin-inject-css-to-js) 插件。
 
-You can transform static resources referenced inside CSS to runtime CDN configurations by configuring the `transformCssSourceURL` parameter. However, note that CSS files referenced in the HTML entry are not allowed to be injected into corresponding JS modules. For more details, refer to [`Why can't I build all css files into js?`](https://github.com/Levix/vite-plugin-inject-css-to-js?tab=readme-ov-file#why-cant-i-build-all-css-files-into-js).
+你可以通过配置 `transformCssSourceURL` 参数将 css 内部引用的静态资源转换为运行时 cdn 配置，但请注意，html 入口引用的 css 文件是不允许注入到对应的 js 模块的，具体可以参考 [`Why can't I build all css files into js?`](https://github.com/Levix/vite-plugin-inject-css-to-js?tab=readme-ov-file#why-cant-i-build-all-css-files-into-js)。
 
 ```ts
 // vite.config.js
 import { defineConfig } from 'vite'
 
-// 1. import the plugin
+// 1. 导入插件
 import { RuntimeCdnPlugin } from 'vite-plugin-runtime-cdn'
 
 export default defineConfig({
   plugins: [
-    // 2. add it to the plugins list
+    // 2. 添加至插件列表
     RuntimeCdnPlugin({
       transformCssSourceURL: true,
     }),

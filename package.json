@@ -13,7 +13,15 @@
     "url": "git+https://github.com/Levix/vite-plugin-runtime-cdn.git"
   },
   "bugs": "https://github.com/Levix/vite-plugin-runtime-cdn/issues",
-  "keywords": [],
+  "keywords": [
+    "vite",
+    "vite2.9",
+    "vite3",
+    "vite4",
+    "vite-plugin",
+    "vite-plugin-runtime-cdn",
+    "runtime-cdn"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -46,6 +54,11 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
+  },
+  "peerDependencies": {
+    "es-module-lexer": "^1.4.1",
+    "magic-string": "^0.30.5",
+    "vite": ">= 2.9.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.0",
