@@ -4,64 +4,61 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
-
-  .:
-    devDependencies:
-      '@antfu/eslint-config':
-        specifier: ^2.6.0
-        version: 2.6.0(@vue/compiler-sfc@3.3.10)(eslint@8.56.0)(typescript@5.3.3)(vitest@1.1.0)
-      '@antfu/ni':
-        specifier: ^0.21.12
-        version: 0.21.12
-      '@antfu/utils':
-        specifier: ^0.7.7
-        version: 0.7.7
-      '@types/node':
-        specifier: ^20.10.5
-        version: 20.10.5
-      bumpp:
-        specifier: ^9.2.1
-        version: 9.2.1
-      es-module-lexer:
-        specifier: ^1.4.1
-        version: 1.4.1
-      eslint:
-        specifier: ^8.56.0
-        version: 8.56.0
-      esno:
-        specifier: ^4.0.0
-        version: 4.0.0
-      lint-staged:
-        specifier: ^15.2.0
-        version: 15.2.0
-      magic-string:
-        specifier: ^0.30.5
-        version: 0.30.5
-      pnpm:
-        specifier: ^8.12.1
-        version: 8.12.1
-      rimraf:
-        specifier: ^5.0.5
-        version: 5.0.5
-      rollup:
-        specifier: ^4.9.3
-        version: 4.9.3
-      simple-git-hooks:
-        specifier: ^2.9.0
-        version: 2.9.0
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-      unbuild:
-        specifier: ^2.0.0
-        version: 2.0.0(typescript@5.3.3)
-      vite:
-        specifier: ^5.0.10
-        version: 5.0.10(@types/node@20.10.5)
-      vitest:
-        specifier: ^1.1.0
-        version: 1.1.0(@types/node@20.10.5)
+devDependencies:
+  '@antfu/eslint-config':
+    specifier: ^2.6.0
+    version: 2.6.0(@vue/compiler-sfc@3.3.10)(eslint@8.56.0)(typescript@5.3.3)(vitest@1.1.0)
+  '@antfu/ni':
+    specifier: ^0.21.12
+    version: 0.21.12
+  '@antfu/utils':
+    specifier: ^0.7.7
+    version: 0.7.7
+  '@types/node':
+    specifier: ^20.10.5
+    version: 20.10.5
+  bumpp:
+    specifier: ^9.2.1
+    version: 9.2.1
+  es-module-lexer:
+    specifier: ^1.4.1
+    version: 1.4.1
+  eslint:
+    specifier: ^8.56.0
+    version: 8.56.0
+  esno:
+    specifier: ^4.0.0
+    version: 4.0.0
+  lint-staged:
+    specifier: ^15.2.0
+    version: 15.2.0
+  magic-string:
+    specifier: ^0.30.5
+    version: 0.30.5
+  pnpm:
+    specifier: ^8.12.1
+    version: 8.12.1
+  rimraf:
+    specifier: ^5.0.5
+    version: 5.0.5
+  rollup:
+    specifier: ^4.9.3
+    version: 4.9.3
+  simple-git-hooks:
+    specifier: ^2.9.0
+    version: 2.9.0
+  typescript:
+    specifier: ^5.3.3
+    version: 5.3.3
+  unbuild:
+    specifier: ^2.0.0
+    version: 2.0.0(typescript@5.3.3)
+  vite:
+    specifier: ^5.0.10
+    version: 5.0.10(@types/node@20.10.5)
+  vitest:
+    specifier: ^1.1.0
+    version: 1.1.0(@types/node@20.10.5)
 
 packages:
 
