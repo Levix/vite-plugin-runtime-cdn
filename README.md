@@ -8,6 +8,7 @@ A Vite plugin that supports runtime CDN configuration.
 一个支持运行时 CDN 配置的 Vite 插件。
 
 [![npm version][npm-version-src]][npm-version-href]
+[![bundle][bundle-src]][bundle-href]
 [![License][license-src]][license-href]
 
 </div>
@@ -90,5 +91,7 @@ export default defineConfig({
 
 [npm-version-src]: https://img.shields.io/npm/v/vite-plugin-runtime-cdn?style=flat&colorA=080f12&colorB=1fa669
 [npm-version-href]: https://npmjs.com/package/vite-plugin-runtime-cdn
+[bundle-src]: https://img.shields.io/bundlephobia/minzip/vite-plugin-runtime-cdn?style=flat&colorA=080f12&colorB=1fa669&label=minzip
+[bundle-href]: https://bundlephobia.com/result?p=vite-plugin-runtime-cdn
 [license-src]: https://img.shields.io/github/license/Levix/vite-plugin-runtime-cdn.svg?style=flat&colorA=080f12&colorB=1fa669
 [license-href]: https://github.com/Levix/vite-plugin-runtime-cdn/blob/main/LICENSE
