@@ -5,6 +5,7 @@ import MagicString from 'magic-string'
 import type { ImportSpecifier } from 'es-module-lexer'
 import type { OutputBundle, OutputChunk, PluginContext } from 'rollup'
 import type { ChunkMetadata, IndexHtmlTransformContext, PluginOption, ResolvedConfig } from 'vite'
+import { getRandomID, numberToPos } from './utils'
 
 // Extend the Rollup RenderedChunk type with viteMetadata property
 declare module 'rollup' {
@@ -16,17 +17,6 @@ declare module 'rollup' {
 interface Options {
   cdnDomainPlaceholder?: string
   transformCssSourceURL?: boolean
-}
-
-// Get a random ID
-function getRandomID(length = 10) {
-  let result = ''
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const charactersLength = characters.length
-  for (let i = 0; i < length; i++)
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-
-  return result
 }
 
 // Preload helper module ID
@@ -178,10 +168,10 @@ function injectCssTojs(ctx: PluginContext, bundle: OutputBundle) {
           // Inject the CSS code directly into the JavaScript chunk
           const initialCode = chunk.code
           chunk.code
-                        = `(function(){ try {var elementStyle = document.createElement('style'); elementStyle.appendChild(document.createTextNode(`
-                        + `${JSON.stringify(cssCode.trim()).replace(/^"|"$/g, '`')}`
-                        + `));document.head.appendChild(elementStyle);} catch(e) {console.error('style-injected-by-js', e);} })(); `
-                        + `${initialCode}`
+            = `(function(){ try {var elementStyle = document.createElement('style'); elementStyle.appendChild(document.createTextNode(`
+            + `${JSON.stringify(cssCode.trim()).replace(/^"|"$/g, '`')}`
+            + `));document.head.appendChild(elementStyle);} catch(e) {console.error('style-injected-by-js', e);} })(); `
+            + `${initialCode}`
         }
       }
       // Clear the imported CSS set for the chunk
@@ -195,13 +185,28 @@ function injectCssTojs(ctx: PluginContext, bundle: OutputBundle) {
  *
  * @param bundle OutputBundle
  */
-function setDeps(bundle: OutputBundle) {
+function setDeps(ctx: PluginContext, bundle: OutputBundle) {
   for (const file in bundle) {
     const chunk = bundle[file]
 
     if (chunk.type === 'chunk') {
       const code = chunk.code
-      const imports: ImportSpecifier[] = parseImports(code)[0].filter(i => i.d > -1)
+      let imports!: ImportSpecifier[]
+
+      try {
+        imports = parseImports(code)[0].filter(i => i.d > -1)
+      }
+      catch (e: any) {
+        const loc = numberToPos(code, e.idx)
+        ctx.error({
+          name: e.name,
+          message: e.message,
+          stack: e.stack,
+          cause: e.cause,
+          pos: e.idx,
+          loc: { ...loc, file: chunk.fileName },
+        })
+      }
 
       if (imports.length) {
         for (let index = 0; index < imports.length; index++) {
@@ -268,7 +273,7 @@ function overwriteChunkCode(chunk: OutputChunk, cdnDomainPlaceholder: string) {
       if (code.includes(asset) && importedAssets.has(asset)) {
         // Regular expression to match CSS URLs
         const cssUrlRE = new RegExp(
-                    `(?<=^|[^\\w\-\\u0080-\\uffff])url\\(\[\"|\'\]?\(${config.base}${asset}\(\\?t=\\d+\)?(#.*?)?\)\[\"|\'\]?\(?=\\\)|,|$)`,
+          `(?<=^|[^\\w\-\\u0080-\\uffff])url\\(\[\"|\'\]?\(${config.base}${asset}\(\\?t=\\d+\)?(#.*?)?\)\[\"|\'\]?\(?=\\\)|,|$)`,
         )
 
         // Replace CSS URLs with CDN URLs
@@ -293,7 +298,7 @@ function overwriteChunkCode(chunk: OutputChunk, cdnDomainPlaceholder: string) {
             cdnSourceMap.set(randomID, fileName)
             code = code.replace(
               new RegExp(`\[\"|\'\]?${fileName}\[\"|\'\]?`),
-                            `\`${cdnDomainPlaceholder}\` + '${randomID}'`,
+              `\`${cdnDomainPlaceholder}\` + '${randomID}'`,
             )
           }
         }
@@ -322,7 +327,7 @@ export function RuntimeCdnPlugin(options: Options = {}): PluginOption {
 
   if (!/^\${.*}$/.test(cdnDomainPlaceholder)) {
     throw new Error(
-            `The 'cdnDomainPlaceholder' configuration only allows a format like '\${window.cdn_domain || ''}. You need to wrap it using \${}.`,
+      `The 'cdnDomainPlaceholder' configuration only allows a format like '\${window.cdn_domain || ''}. You need to wrap it using \${}.`,
     )
   }
 
@@ -360,7 +365,7 @@ export function RuntimeCdnPlugin(options: Options = {}): PluginOption {
       if (transformCssSourceURL)
         injectCssTojs(this, bundle)
 
-      setDeps(bundle)
+      setDeps(this, bundle)
     },
 
     writeBundle(options, bundle) {
